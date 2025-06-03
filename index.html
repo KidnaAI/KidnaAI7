@@ -3,44 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kidna AI Firebase Google Login</title>
+  <title>Kidna AI7 Firebase Google Login</title>
   <script type="module">
-    // Import Firebase modules
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js";
 
-    // Your Firebase config (from your input)
+    // Your Firebase config
     const firebaseConfig = {
-      apiKey: "AIzaSyCTV2ggyAdBg3yjr9zPOrMeppmNoXm1lVI",
-      authDomain: "kidnaai.firebaseapp.com",
-      projectId: "kidnaai",
-      storageBucket: "kidnaai.firebasestorage.app",
-      messagingSenderId: "527842055273",
-      appId: "1:527842055273:web:c276df59df516206517ef8",
-      measurementId: "G-W2Z2VDM0HT"
+      apiKey: "AIzaSyCWFOXlCpgXlwg25jitOM4syT4tVGzwfwQ",
+      authDomain: "kidnaai7.firebaseapp.com",
+      projectId: "kidnaai7",
+      storageBucket: "kidnaai7.firebasestorage.app",
+      messagingSenderId: "645820453086",
+      appId: "1:645820453086:web:8c9c126471ecfd302ff24f"
     };
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
     const auth = getAuth(app);
-
-    // UI references
-    const loginBtn = document.getElementById('googleLoginBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const userDetailsDiv = document.getElementById('userDetails');
-
-    // Google provider
     const provider = new GoogleAuthProvider();
 
-    // Login function
+    // Elements
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const userDiv = document.getElementById('userInfo');
+
+    // Login
     loginBtn.addEventListener('click', () => {
       signInWithPopup(auth, provider)
         .then((result) => {
-          // Signed in
-          const user = result.user;
-          displayUser(user);
+          showUser(result.user);
         })
         .catch((error) => {
           alert("Login failed: " + error.message);
@@ -48,18 +40,18 @@
         });
     });
 
-    // Logout function
+    // Logout
     logoutBtn.addEventListener('click', () => {
       signOut(auth).then(() => {
-        userDetailsDiv.innerHTML = '';
+        userDiv.innerHTML = '';
         loginBtn.style.display = 'inline-block';
         logoutBtn.style.display = 'none';
       });
     });
 
     // Show user info
-    function displayUser(user) {
-      userDetailsDiv.innerHTML = `
+    function showUser(user) {
+      userDiv.innerHTML = `
         <p><strong>Name:</strong> ${user.displayName}</p>
         <p><strong>Email:</strong> ${user.email}</p>
         <img src="${user.photoURL}" alt="User Photo" width="100" />
@@ -68,12 +60,12 @@
       logoutBtn.style.display = 'inline-block';
     }
 
-    // Check auth state on page load
+    // Auth state listener
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        displayUser(user);
+        showUser(user);
       } else {
-        userDetailsDiv.innerHTML = '';
+        userDiv.innerHTML = '';
         loginBtn.style.display = 'inline-block';
         logoutBtn.style.display = 'none';
       }
@@ -81,9 +73,10 @@
   </script>
 </head>
 <body>
-  <h2>Kidna AI Firebase Google Login</h2>
-  <button id="googleLoginBtn">Login with Google</button>
+  <h2>Kidna AI7 Firebase Google Login</h2>
+  <button id="loginBtn">Login with Google</button>
   <button id="logoutBtn" style="display:none;">Logout</button>
-  <div id="userDetails" style="margin-top: 20px;"></div>
+  <div id="userInfo" style="margin-top:20px;"></div>
 </body>
 </html>
+
