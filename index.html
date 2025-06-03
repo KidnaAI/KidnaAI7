@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kidna AI Firebase Google Login</title>
+  <script type="module">
+    // Import Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js";
+
+    // Your Firebase config (from your input)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCTV2ggyAdBg3yjr9zPOrMeppmNoXm1lVI",
+      authDomain: "kidnaai.firebaseapp.com",
+      projectId: "kidnaai",
+      storageBucket: "kidnaai.firebasestorage.app",
+      messagingSenderId: "527842055273",
+      appId: "1:527842055273:web:c276df59df516206517ef8",
+      measurementId: "G-W2Z2VDM0HT"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+
+    // UI references
+    const loginBtn = document.getElementById('googleLoginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const userDetailsDiv = document.getElementById('userDetails');
+
+    // Google provider
+    const provider = new GoogleAuthProvider();
+
+    // Login function
+    loginBtn.addEventListener('click', () => {
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          // Signed in
+          const user = result.user;
+          displayUser(user);
+        })
+        .catch((error) => {
+          alert("Login failed: " + error.message);
+          console.error(error);
+        });
+    });
+
+    // Logout function
+    logoutBtn.addEventListener('click', () => {
+      signOut(auth).then(() => {
+        userDetailsDiv.innerHTML = '';
+        loginBtn.style.display = 'inline-block';
+        logoutBtn.style.display = 'none';
+      });
+    });
+
+    // Show user info
+    function displayUser(user) {
+      userDetailsDiv.innerHTML = `
+        <p><strong>Name:</strong> ${user.displayName}</p>
+        <p><strong>Email:</strong> ${user.email}</p>
+        <img src="${user.photoURL}" alt="User Photo" width="100" />
+      `;
+      loginBtn.style.display = 'none';
+      logoutBtn.style.display = 'inline-block';
+    }
+
+    // Check auth state on page load
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        displayUser(user);
+      } else {
+        userDetailsDiv.innerHTML = '';
+        loginBtn.style.display = 'inline-block';
+        logoutBtn.style.display = 'none';
+      }
+    });
+  </script>
+</head>
+<body>
+  <h2>Kidna AI Firebase Google Login</h2>
+  <button id="googleLoginBtn">Login with Google</button>
+  <button id="logoutBtn" style="display:none;">Logout</button>
+  <div id="userDetails" style="margin-top: 20px;"></div>
+</body>
+</html>
